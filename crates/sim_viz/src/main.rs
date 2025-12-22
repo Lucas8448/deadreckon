@@ -1,6 +1,6 @@
 use glam::Vec2;
 use macroquad::prelude::*;
-use sim_core::{Missile, Params, Sim, Status, Target};
+use sim_core::{Scenario, Sim, Status};
 
 fn world_to_screen(p: Vec2, origin: Vec2, scale: f32) -> Vec2 {
     let v = (p - origin) * scale;
@@ -9,11 +9,26 @@ fn world_to_screen(p: Vec2, origin: Vec2, scale: f32) -> Vec2 {
 
 #[macroquad::main("Deadreckon")]
 async fn main() {
-    let missile = Missile { p: Vec2::new(0.0, 0.0), v: Vec2::new(250.0, 0.0), a_max: 60.0 };
-    let target  = Target  { p: Vec2::new(6000.0, 1500.0), v: Vec2::new(-180.0, 0.0) };
-    let params  = Params  { dt: 0.02, nav_const: 4.0, kill_radius: 10.0, max_time: 60.0 };
+    let args: Vec<String> = std::env::args().collect();
 
-    let mut sim = Sim::new(missile, target, params);
+    let scenario = if args.len() > 1 {
+        let name = &args[1];
+        match Scenario::by_name(name) {
+            Some(s) => s,
+            None => {
+                eprintln!("Unknown scenario: '{}'\nAvailable:", name);
+                for s in Scenario::all() {
+                    eprintln!("  - {}", s.name);
+                }
+                std::process::exit(1);
+            }
+        }
+    } else {
+        sim_core::scenario::baseline()
+    };
+
+    let mut sim = Sim::new(scenario.missile, scenario.target, scenario.params);
+    let scenario_name = scenario.name;
 
     let mut missile_traj: Vec<Vec2> = Vec::new();
     let mut target_traj: Vec<Vec2> = Vec::new();
@@ -59,8 +74,8 @@ async fn main() {
 
         draw_text(
             &format!(
-                "t={:.2}s  range={:.1}m  Vc={:.1}m/s  los_rate={:.5}  a_cmd={:.1}",
-                sim.last.t, sim.last.range, sim.last.closing_speed, sim.last.los_rate, sim.last.a_cmd
+                "[{}]  t={:.2}s  range={:.1}m  Vc={:.1}m/s  los_rate={:.5}  a_cmd={:.1}",
+                scenario_name, sim.last.t, sim.last.range, sim.last.closing_speed, sim.last.los_rate, sim.last.a_cmd
             ),
             16.0,
             24.0,

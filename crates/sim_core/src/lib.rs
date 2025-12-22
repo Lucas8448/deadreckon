@@ -1,5 +1,8 @@
 use glam::Vec2;
 
+pub mod scenario;
+pub use scenario::Scenario;
+
 #[derive(Clone, Copy, Debug)]
 pub struct Missile {
     pub p: Vec2,      // position (m)
