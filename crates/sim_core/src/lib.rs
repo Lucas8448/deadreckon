@@ -1,5 +1,6 @@
 use glam::Vec2;
 
+pub mod monte_carlo;
 pub mod scenario;
 pub use scenario::Scenario;
 
