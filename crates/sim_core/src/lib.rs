@@ -3,6 +3,15 @@ use glam::Vec2;
 pub mod scenario;
 pub use scenario::Scenario;
 
+#[derive(Clone, Copy, Debug, Default)]
+pub enum TargetManeuver {
+    #[default]
+    ConstantVelocity,
+    ConstantTurn { omega: f32 },
+    AccelBurst { start_t: f32, end_t: f32, a: Vec2 },
+    Weave { amplitude: f32, freq: f32 },
+}
+
 #[derive(Clone, Copy, Debug)]
 pub struct Missile {
     pub p: Vec2,      // position (m)
@@ -14,6 +23,7 @@ pub struct Missile {
 pub struct Target {
     pub p: Vec2,
     pub v: Vec2,
+    pub maneuver: TargetManeuver,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -108,6 +118,30 @@ impl Sim {
 
         self.missile.v += a_vec * dt;
         self.missile.p += self.missile.v * dt;
+
+        // Apply target maneuver
+        match self.target.maneuver {
+            TargetManeuver::ConstantVelocity => {}
+            TargetManeuver::ConstantTurn { omega } => {
+                // Rotate velocity by omega * dt
+                let (sin, cos) = (omega * dt).sin_cos();
+                let vx = self.target.v.x * cos - self.target.v.y * sin;
+                let vy = self.target.v.x * sin + self.target.v.y * cos;
+                self.target.v = Vec2::new(vx, vy);
+            }
+            TargetManeuver::AccelBurst { start_t, end_t, a } => {
+                if self.t >= start_t && self.t <= end_t {
+                    self.target.v += a * dt;
+                }
+            }
+            TargetManeuver::Weave { amplitude, freq } => {
+                // a(t) = amplitude * sin(2π * freq * t)
+                let a_mag = amplitude * (2.0 * std::f32::consts::PI * freq * self.t).sin();
+                let v_hat = self.target.v.normalize_or_zero();
+                let a_perp = perp(v_hat) * a_mag;
+                self.target.v += a_perp * dt;
+            }
+        }
 
         self.target.p += self.target.v * dt;
 
