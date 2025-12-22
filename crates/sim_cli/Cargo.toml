@@ -5,3 +5,4 @@ edition = "2024"
 
 [dependencies]
 sim_core = { path = "../sim_core" }
+glam = "0.27"

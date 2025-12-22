@@ -107,12 +107,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9e05e7e6723e3455f4818c7b26e855439f7546cf617ef669d1adedb8669e5cb9"
 
 [[package]]
-name = "glam"
-version = "0.28.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "779ae4bf7e8421cf91c0b3b64e7e8b40b862fba4d393f59150042de7c4965a94"
-
-[[package]]
 name = "hashbrown"
 version = "0.15.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -149,7 +143,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d2befbae373456143ef55aa93a73594d080adfb111dc32ec96a1123a3e4ff4ae"
 dependencies = [
  "fontdue",
- "glam 0.27.0",
+ "glam",
  "image",
  "macroquad_macro",
  "miniquad",
@@ -240,6 +234,7 @@ checksum = "5a651516ddc9168ebd67b24afd085a718be02f8858fe406591b013d101ce2f40"
 name = "sim_cli"
 version = "0.1.0"
 dependencies = [
+ "glam",
  "sim_core",
 ]
 
@@ -247,7 +242,7 @@ dependencies = [
 name = "sim_core"
 version = "0.1.0"
 dependencies = [
- "glam 0.28.0",
+ "glam",
 ]
 
 [[package]]
