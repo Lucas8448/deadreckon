@@ -16,9 +16,10 @@ pub enum TargetManeuver {
 
 #[derive(Clone, Copy, Debug)]
 pub struct Missile {
-    pub p: Vec2,      // position (m)
-    pub v: Vec2,      // velocity (m/s)
-    pub a_max: f32,   // max lateral acceleration (m/s^2)
+    pub p: Vec2,
+    pub v: Vec2,
+    pub a_max: f32,
+    pub gimbal_limit: f32,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -111,6 +112,7 @@ pub enum Status {
     Running,
     Hit,
     Timeout,
+    LostLock,
 }
 
 fn perp(v: Vec2) -> Vec2 {
@@ -197,10 +199,18 @@ impl Sim {
 
         self.observed = self.observe_target();
 
-        let mut a_cmd = self.params.nav_const * self.observed.closing_speed * self.observed.los_rate;
-        a_cmd = a_cmd.clamp(-self.missile.a_max, self.missile.a_max);
-
+        let r = self.target.p - self.missile.p;
         let v_hat = self.missile.v.normalize_or_zero();
+        let r_hat = r.normalize_or_zero();
+        let look_angle = v_hat.dot(r_hat).acos();
+
+        let a_cmd = if look_angle > self.missile.gimbal_limit {
+            0.0
+        } else {
+            let cmd = self.params.nav_const * self.observed.closing_speed * self.observed.los_rate;
+            cmd.clamp(-self.missile.a_max, self.missile.a_max)
+        };
+
         let a_vec = perp(v_hat) * a_cmd;
 
         self.missile.v += a_vec * dt;

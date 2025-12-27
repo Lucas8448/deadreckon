@@ -37,6 +37,7 @@ pub fn baseline() -> Scenario {
             p: Vec2::new(0.0, 0.0),
             v: Vec2::new(250.0, 0.0),
             a_max: 60.0,
+            gimbal_limit: 0.52,
         },
         target: Target {
             p: Vec2::new(6000.0, 1500.0),
@@ -60,6 +61,7 @@ pub fn head_on() -> Scenario {
             p: Vec2::new(0.0, 0.0),
             v: Vec2::new(300.0, 0.0),
             a_max: 60.0,
+            gimbal_limit: 0.52,
         },
         target: Target {
             p: Vec2::new(8000.0, 0.0),
@@ -83,6 +85,7 @@ pub fn crossing() -> Scenario {
             p: Vec2::new(0.0, 0.0),
             v: Vec2::new(280.0, 0.0),
             a_max: 80.0,
+            gimbal_limit: 0.52,
         },
         target: Target {
             p: Vec2::new(5000.0, 0.0),
@@ -106,6 +109,7 @@ pub fn fast_target() -> Scenario {
             p: Vec2::new(0.0, 0.0),
             v: Vec2::new(350.0, 0.0),
             a_max: 100.0,
+            gimbal_limit: 0.52,
         },
         target: Target {
             p: Vec2::new(10000.0, 2000.0),
@@ -129,6 +133,7 @@ pub fn turning_target() -> Scenario {
             p: Vec2::new(0.0, 0.0),
             v: Vec2::new(300.0, 0.0),
             a_max: 100.0,
+            gimbal_limit: 0.52,
         },
         target: Target {
             p: Vec2::new(5000.0, 500.0),
@@ -152,6 +157,7 @@ pub fn weaving_target() -> Scenario {
             p: Vec2::new(0.0, 0.0),
             v: Vec2::new(320.0, 0.0),
             a_max: 120.0,
+            gimbal_limit: 0.52,
         },
         target: Target {
             p: Vec2::new(6000.0, 0.0),
