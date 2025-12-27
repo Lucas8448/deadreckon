@@ -1,7 +1,7 @@
 use glam::Vec2;
 use rand::Rng;
 
-use crate::{Scenario, Sim, Status};
+use crate::{Scenario, SensorNoise, Sim, Status};
 
 #[derive(Clone, Copy, Debug)]
 pub struct TrialResult {
@@ -33,7 +33,6 @@ pub struct SweepConfig {
     pub perturb: Perturbations,
 }
 
-/// What to randomize in each trial.
 #[derive(Clone, Copy, Debug, Default)]
 pub struct Perturbations {
     pub target_pos: f32,
@@ -41,6 +40,7 @@ pub struct Perturbations {
     pub target_heading: f32,
     pub nav_const: f32,
     pub a_max: f32,
+    pub sensor_noise: SensorNoise,
 }
 
 impl SweepConfig {
@@ -55,6 +55,7 @@ impl SweepConfig {
                 target_heading: 0.2,
                 nav_const: 0.0,
                 a_max: 0.0,
+                sensor_noise: SensorNoise::default(),
             },
         }
     }
@@ -71,6 +72,11 @@ impl SweepConfig {
 
     pub fn with_a_max_sweep(mut self, delta: f32) -> Self {
         self.perturb.a_max = delta;
+        self
+    }
+
+    pub fn with_sensor_noise(mut self, noise: SensorNoise) -> Self {
+        self.perturb.sensor_noise = noise;
         self
     }
 }
@@ -111,7 +117,8 @@ fn run_trial<R: Rng>(scenario: &Scenario, perturb: &Perturbations, rng: &mut R) 
         missile.a_max = missile.a_max.max(10.0);
     }
 
-    let mut sim = Sim::new(missile, target, params);
+    let sensor_seed = rng.random::<u64>();
+    let mut sim = Sim::with_sensor_noise(missile, target, params, perturb.sensor_noise, sensor_seed);
     let mut status = Status::Running;
     while status == Status::Running {
         status = sim.step();

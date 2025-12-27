@@ -3,6 +3,7 @@ use glam::Vec2;
 pub mod monte_carlo;
 pub mod scenario;
 pub use scenario::Scenario;
+pub use monte_carlo::{SweepConfig, Perturbations};
 
 #[derive(Clone, Copy, Debug, Default)]
 pub enum TargetManeuver {
@@ -29,10 +30,59 @@ pub struct Target {
 
 #[derive(Clone, Copy, Debug)]
 pub struct Params {
-    pub dt: f32,          // seconds
-    pub nav_const: f32,   // PN constant N
-    pub kill_radius: f32, // meters
-    pub max_time: f32,    // seconds
+    pub dt: f32,
+    pub nav_const: f32,
+    pub kill_radius: f32,
+    pub max_time: f32,
+}
+
+#[derive(Clone, Copy, Debug, Default)]
+pub struct SensorNoise {
+    pub range_std: f32,
+    pub range_rate_std: f32,
+    pub angle_std: f32,
+    pub angle_rate_std: f32,
+}
+
+impl SensorNoise {
+    pub fn perfect() -> Self {
+        Self::default()
+    }
+
+    pub fn realistic() -> Self {
+        Self {
+            range_std: 10.0,
+            range_rate_std: 2.0,
+            angle_std: 0.002,
+            angle_rate_std: 0.001,
+        }
+    }
+
+    pub fn degraded() -> Self {
+        Self {
+            range_std: 50.0,
+            range_rate_std: 10.0,
+            angle_std: 0.01,
+            angle_rate_std: 0.005,
+        }
+    }
+
+    pub fn extreme() -> Self {
+        Self {
+            range_std: 800.0,
+            range_rate_std: 150.0,
+            angle_std: 0.2,
+            angle_rate_std: 0.1,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Default)]
+pub struct ObservedState {
+    pub range: f32,
+    pub closing_speed: f32,
+    pub los_angle: f32,
+    pub los_rate: f32,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -49,8 +99,11 @@ pub struct Sim {
     pub missile: Missile,
     pub target: Target,
     pub params: Params,
+    pub sensor_noise: SensorNoise,
     pub t: f32,
     pub last: Telemetry,
+    pub observed: ObservedState,
+    rng_state: u64,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -67,10 +120,21 @@ fn perp(v: Vec2) -> Vec2 {
 
 impl Sim {
     pub fn new(missile: Missile, target: Target, params: Params) -> Self {
+        Self::with_sensor_noise(missile, target, params, SensorNoise::perfect(), 0)
+    }
+
+    pub fn with_sensor_noise(
+        missile: Missile,
+        target: Target,
+        params: Params,
+        sensor_noise: SensorNoise,
+        seed: u64,
+    ) -> Self {
         let mut sim = Self {
             missile,
             target,
             params,
+            sensor_noise,
             t: 0.0,
             last: Telemetry {
                 t: 0.0,
@@ -79,9 +143,42 @@ impl Sim {
                 los_rate: 0.0,
                 a_cmd: 0.0,
             },
+            observed: ObservedState::default(),
+            rng_state: seed,
         };
         sim.recompute_telemetry(0.0);
         sim
+    }
+
+    fn next_gaussian(&mut self) -> f32 {
+        self.rng_state = self.rng_state.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+        let u1 = ((self.rng_state >> 32) as u32) as f32 / (u32::MAX as f32);
+        self.rng_state = self.rng_state.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+        let u2 = ((self.rng_state >> 32) as u32) as f32 / (u32::MAX as f32);
+        let u1 = u1.max(1e-10);
+        (-2.0 * u1.ln()).sqrt() * (2.0 * std::f32::consts::PI * u2).cos()
+    }
+
+    fn observe_target(&mut self) -> ObservedState {
+        let r = self.target.p - self.missile.p;
+        let range_true = r.length().max(1e-6);
+        let r_hat = r / range_true;
+        let v_rel = self.target.v - self.missile.v;
+        let closing_speed_true = -(v_rel.dot(r_hat));
+        let los_angle_true = r.y.atan2(r.x);
+        let los_rate_true = (r.x * v_rel.y - r.y * v_rel.x) / (range_true * range_true);
+
+        let range = range_true + self.next_gaussian() * self.sensor_noise.range_std;
+        let closing_speed = closing_speed_true + self.next_gaussian() * self.sensor_noise.range_rate_std;
+        let los_angle = los_angle_true + self.next_gaussian() * self.sensor_noise.angle_std;
+        let los_rate = los_rate_true + self.next_gaussian() * self.sensor_noise.angle_rate_std;
+
+        ObservedState {
+            range: range.max(1.0),
+            closing_speed,
+            los_angle,
+            los_rate,
+        }
     }
 
     pub fn step(&mut self) -> Status {
@@ -98,20 +195,9 @@ impl Sim {
             return Status::Hit;
         }
 
-        let r_len = range.max(1e-6);
-        let r2 = r_len * r_len;
-        let r_hat = r / r_len;
+        self.observed = self.observe_target();
 
-        let v_rel = self.target.v - self.missile.v;
-
-        // Vc = -v_rel · r̂
-        let closing_speed = -(v_rel.dot(r_hat));
-
-        // λ̇ = (r × v_rel) / |r|²
-        let los_rate = (r.x * v_rel.y - r.y * v_rel.x) / r2;
-
-        // a = N · Vc · λ̇
-        let mut a_cmd = self.params.nav_const * closing_speed * los_rate;
+        let mut a_cmd = self.params.nav_const * self.observed.closing_speed * self.observed.los_rate;
         a_cmd = a_cmd.clamp(-self.missile.a_max, self.missile.a_max);
 
         let v_hat = self.missile.v.normalize_or_zero();

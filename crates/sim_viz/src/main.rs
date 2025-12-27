@@ -1,18 +1,32 @@
 use glam::Vec2;
 use macroquad::prelude::*;
-use sim_core::{Scenario, Sim, Status};
+use sim_core::{Scenario, SensorNoise, Sim, Status};
 
 fn world_to_screen(p: Vec2, origin: Vec2, scale: f32) -> Vec2 {
     let v = (p - origin) * scale;
     Vec2::new(v.x, -v.y)
 }
 
+fn parse_noise(args: &[String]) -> (SensorNoise, &'static str) {
+    for arg in args {
+        if let Some(val) = arg.strip_prefix("--noise=") {
+            return match val {
+                "realistic" => (SensorNoise::realistic(), "realistic"),
+                "degraded" => (SensorNoise::degraded(), "degraded"),
+                "extreme" => (SensorNoise::extreme(), "extreme"),
+                _ => (SensorNoise::perfect(), "perfect"),
+            };
+        }
+    }
+    (SensorNoise::perfect(), "perfect")
+}
+
 #[macroquad::main("Deadreckon")]
 async fn main() {
     let args: Vec<String> = std::env::args().collect();
 
-    let scenario = if args.len() > 1 {
-        let name = &args[1];
+    let scenario_name_arg = args.iter().skip(1).find(|a| !a.starts_with("--"));
+    let scenario = if let Some(name) = scenario_name_arg {
         match Scenario::by_name(name) {
             Some(s) => s,
             None => {
@@ -27,7 +41,8 @@ async fn main() {
         sim_core::scenario::baseline()
     };
 
-    let mut sim = Sim::new(scenario.missile, scenario.target, scenario.params);
+    let (noise, noise_label) = parse_noise(&args);
+    let mut sim = Sim::with_sensor_noise(scenario.missile, scenario.target, scenario.params, noise, 12345);
     let scenario_name = scenario.name;
 
     let mut missile_traj: Vec<Vec2> = Vec::new();
@@ -74,8 +89,8 @@ async fn main() {
 
         draw_text(
             &format!(
-                "[{}]  t={:.2}s  range={:.1}m  Vc={:.1}m/s  los_rate={:.5}  a_cmd={:.1}",
-                scenario_name, sim.last.t, sim.last.range, sim.last.closing_speed, sim.last.los_rate, sim.last.a_cmd
+                "[{}] noise={}  t={:.2}s  range={:.1}m  Vc={:.1}m/s  a_cmd={:.1}",
+                scenario_name, noise_label, sim.last.t, sim.last.range, sim.last.closing_speed, sim.last.a_cmd
             ),
             16.0,
             24.0,

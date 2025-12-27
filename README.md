@@ -10,29 +10,43 @@ cargo run -p sim_cli -- baseline
 cargo run -p sim_cli -- turning
 cargo run -p sim_cli -- weaving
 
+# Run with sensor noise
+cargo run -p sim_cli -- baseline --noise=realistic
+cargo run -p sim_cli -- turning --noise=degraded
+cargo run -p sim_cli -- weaving --noise=extreme
+
 # Visualize
 cargo run -p sim_viz -- turning
 
 # Monte Carlo analysis (500 trials)
 cargo run -p sim_cli -- sweep baseline 500
 cargo run -p sim_cli -- sweep weaving 500 --nav=1.5
+cargo run -p sim_cli -- sweep baseline 500 --noise=realistic
 ```
+
+## Sensor Noise Levels
+
+| Level       | Range σ | Range Rate σ | Angle σ  | Angle Rate σ |
+| ----------- | ------- | ------------ | -------- | ------------ |
+| `perfect`   | 0       | 0            | 0        | 0            |
+| `realistic` | 10m     | 2m/s         | 0.002rad | 0.001rad/s   |
+| `degraded`  | 50m     | 10m/s        | 0.01rad  | 0.005rad/s   |
 
 ## Scenarios
 
-| Name | Description |
-|------|-------------|
-| `baseline` | Standard engagement, target approaching |
-| `head_on` | Target flying directly at missile |
-| `crossing` | Target perpendicular to LOS |
-| `fast_target` | Supersonic target |
-| `turning` | Constant turn rate maneuver |
-| `weaving` | Sinusoidal evasive maneuver |
+| Name          | Description                             |
+| ------------- | --------------------------------------- |
+| `baseline`    | Standard engagement, target approaching |
+| `head_on`     | Target flying directly at missile       |
+| `crossing`    | Target perpendicular to LOS             |
+| `fast_target` | Supersonic target                       |
+| `turning`     | Constant turn rate maneuver             |
+| `weaving`     | Sinusoidal evasive maneuver             |
 
 ## Workspace
 
-| Crate | Purpose |
-|-------|---------|
+| Crate      | Purpose                              |
+| ---------- | ------------------------------------ |
 | `sim_core` | Dynamics, guidance laws, Monte Carlo |
-| `sim_cli` | Command-line runner |
-| `sim_viz` | Real-time visualization (macroquad) |
+| `sim_cli`  | Command-line runner                  |
+| `sim_viz`  | Real-time visualization (macroquad)  |

@@ -1,12 +1,14 @@
 use sim_core::monte_carlo::{SweepConfig, run_sweep};
-use sim_core::{Scenario, Sim, Status};
+use sim_core::{Scenario, SensorNoise, Sim, Status};
 
 fn print_usage() {
     eprintln!("Usage:");
     eprintln!("  sim_cli [scenario]              Run a single scenario");
+    eprintln!("  sim_cli [scenario] --noise=<level>  Run with sensor noise (perfect|realistic|degraded)");
     eprintln!("  sim_cli sweep [scenario] [N]    Run N Monte Carlo trials (default: 500)");
     eprintln!("  sim_cli sweep [scenario] [N] --nav=<delta>  Sweep nav_const ± delta");
     eprintln!("  sim_cli sweep [scenario] [N] --amax=<delta> Sweep a_max ± delta");
+    eprintln!("  sim_cli sweep [scenario] [N] --noise=<level>  Add sensor noise");
     eprintln!();
     eprintln!("Available scenarios:");
     for s in Scenario::all() {
@@ -26,23 +28,35 @@ fn main() {
     }
 }
 
-fn run_single(args: &[String]) {
-    let scenario = if !args.is_empty() {
-        let name = &args[0];
-        match Scenario::by_name(name) {
-            Some(s) => s,
-            None => {
-                eprintln!("Unknown scenario: '{}'", name);
-                print_usage();
-                std::process::exit(1);
-            }
+fn parse_noise(args: &[String]) -> SensorNoise {
+    for arg in args {
+        if let Some(val) = arg.strip_prefix("--noise=") {
+            return match val {
+                "realistic" => SensorNoise::realistic(),
+                "degraded" => SensorNoise::degraded(),
+                "extreme" => SensorNoise::extreme(),
+                _ => SensorNoise::perfect(),
+            };
         }
-    } else {
-        sim_core::scenario::baseline()
+    }
+    SensorNoise::perfect()
+}
+
+fn run_single(args: &[String]) {
+    let scenario_name = args.first().map(|s| s.as_str()).unwrap_or("baseline");
+    let scenario = match Scenario::by_name(scenario_name) {
+        Some(s) => s,
+        None => {
+            eprintln!("Unknown scenario: '{}'", scenario_name);
+            print_usage();
+            std::process::exit(1);
+        }
     };
 
-    println!("=== Scenario: {} ===", scenario.name);
-    let mut sim = Sim::new(scenario.missile, scenario.target, scenario.params);
+    let noise = parse_noise(args);
+    let noise_label = if noise.range_std > 0.0 { "with noise" } else { "perfect" };
+    println!("=== Scenario: {} ({}) ===", scenario.name, noise_label);
+    let mut sim = Sim::with_sensor_noise(scenario.missile, scenario.target, scenario.params, noise, 42);
 
     let mut status = Status::Running;
     while status == Status::Running {
@@ -88,6 +102,14 @@ fn run_monte_carlo(args: &[String]) {
             if let Ok(seed) = val.parse::<u64>() {
                 config = config.with_seed(seed);
             }
+        } else if let Some(val) = arg.strip_prefix("--noise=") {
+            let noise = match val {
+                "realistic" => SensorNoise::realistic(),
+                "degraded" => SensorNoise::degraded(),
+                "extreme" => SensorNoise::extreme(),
+                _ => SensorNoise::perfect(),
+            };
+            config = config.with_sensor_noise(noise);
         }
     }
 
@@ -97,6 +119,10 @@ fn run_monte_carlo(args: &[String]) {
     }
     if config.perturb.a_max > 0.0 {
         println!("  a_max sweep: ±{:.1}", config.perturb.a_max);
+    }
+    if config.perturb.sensor_noise.range_std > 0.0 {
+        println!("  sensor noise: range_std={:.1}m angle_rate_std={:.4}rad/s", 
+            config.perturb.sensor_noise.range_std, config.perturb.sensor_noise.angle_rate_std);
     }
     println!();
 
