@@ -1,8 +1,17 @@
 [package]
 name = "sim_viz"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 
+[[bin]]
+name = "sim_viz"
+path = "src/main.rs"
+
+[[bin]]
+name = "sim_svg"
+path = "src/svg.rs"
+
 [dependencies]
-macroquad = "0.4"
 sim_core = { path = "../sim_core" }
+physics_sandbox = { version = "0.1.4", features = ["viz"] }
+crossterm = "0.28"

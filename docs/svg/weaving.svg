@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1300 1300" width="1300" height="1300">
+<style>
+  .bg { fill: #0c1116; }
+.panel { fill: #11161c; stroke: #2a3340; stroke-width: 1; }
+.grid { stroke: #1c2430; stroke-width: 1; }
+.axis { stroke: #4a5260; stroke-width: 1; }
+.ground { stroke: #6b5a26; stroke-width: 1.5; stroke-dasharray: 4 3; }
+.tick { fill: #7a8290; font: 11px monospace; }
+.title { fill: #d6deea; font: 14px monospace; font-weight: bold; }
+.subtitle { fill: #7a8290; font: 11px monospace; }
+.summary { fill: #d6deea; font: 13px monospace; }
+.summary-dim { fill: #7a8290; font: 12px monospace; }
+.track { fill: none; stroke-width: 1.8; }
+.start { stroke-width: 1.2; }
+.end { stroke-width: 1.0; }
+</style>
+<rect class="bg" width="1300" height="1300" />
+<g transform="translate(60,60)">
+<rect class="panel" width="560" height="560" />
+<text class="title" x="10" y="18">SIDE  X x Y</text>
+<text class="subtitle" x="10" y="32">X -&gt; range (horiz),  Y -&gt; alt (vert)</text>
+<line class="grid" x1="60.0" y1="50.0" x2="60.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="520.0" x2="530.0" y2="520.0" />
+<text class="tick" x="60.0" y="534.0" text-anchor="middle">0</text>
+<text class="tick" x="56.0" y="524.0" text-anchor="end">0</text>
+<line class="grid" x1="154.0" y1="50.0" x2="154.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="426.0" x2="530.0" y2="426.0" />
+<text class="tick" x="154.0" y="534.0" text-anchor="middle">1.5k</text>
+<text class="tick" x="56.0" y="430.0" text-anchor="end">1.5k</text>
+<line class="grid" x1="248.0" y1="50.0" x2="248.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="332.0" x2="530.0" y2="332.0" />
+<text class="tick" x="248.0" y="534.0" text-anchor="middle">3.0k</text>
+<text class="tick" x="56.0" y="336.0" text-anchor="end">3.0k</text>
+<line class="grid" x1="342.0" y1="50.0" x2="342.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="238.0" x2="530.0" y2="238.0" />
+<text class="tick" x="342.0" y="534.0" text-anchor="middle">4.5k</text>
+<text class="tick" x="56.0" y="242.0" text-anchor="end">4.5k</text>
+<line class="grid" x1="436.0" y1="50.0" x2="436.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="144.0" x2="530.0" y2="144.0" />
+<text class="tick" x="436.0" y="534.0" text-anchor="middle">6.0k</text>
+<text class="tick" x="56.0" y="148.0" text-anchor="end">6.0k</text>
+<line class="grid" x1="530.0" y1="50.0" x2="530.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="50.0" x2="530.0" y2="50.0" />
+<text class="tick" x="530.0" y="534.0" text-anchor="middle">7.5k</text>
+<text class="tick" x="56.0" y="54.0" text-anchor="end">7.5k</text>
+<line class="axis" x1="60.0" y1="50.0" x2="60.0" y2="520.0" />
+<line class="axis" x1="60.0" y1="520.0" x2="530.0" y2="520.0" />
+<line class="ground" x1="60.0" y1="520.0" x2="530.0" y2="520.0" />
+<path id="p0t0" class="track" stroke="#e63946" d="M 60.0 520.0 L 62.0 520.0 L 64.0 520.0 L 66.0 519.9 L 68.0 519.8 L 70.0 519.7 L 72.0 519.6 L 74.0 519.4 L 76.0 519.2 L 78.0 519.0 L 80.0 518.7 L 82.0 518.5 L 84.0 518.1 L 85.9 517.8 L 87.9 517.4 L 89.9 517.1 L 91.9 516.7 L 93.8 516.3 L 95.8 515.9 L 97.7 515.4 L 99.7 515.0 L 101.7 514.6 L 103.6 514.1 L 105.6 513.6 L 107.5 513.1 L 109.4 512.6 L 111.4 512.0 L 113.3 511.4 L 115.2 510.8 L 117.1 510.2 L 119.0 509.6 L 120.9 508.9 L 122.8 508.3 L 124.7 507.6 L 126.6 507.0 L 128.5 506.3 L 130.4 505.7 L 132.3 505.0 L 134.2 504.3 L 136.1 503.7 L 137.9 503.0 L 139.8 502.3 L 141.7 501.5 L 143.5 500.8 L 145.4 500.0 L 147.2 499.2 L 149.1 498.4 L 150.9 497.6 L 152.8 496.8 L 154.6 496.0 L 156.4 495.2 L 158.3 494.4 L 160.1 493.6 L 162.0 492.9 L 163.8 492.1 L 165.7 491.3 L 167.5 490.5 L 169.4 489.7 L 171.2 488.9 L 173.0 488.0 L 174.8 487.1 L 176.6 486.3 L 178.4 485.4 L 180.2 484.5 L 182.0 483.6 L 183.8 482.7 L 185.6 481.8 L 187.4 480.9 L 189.2 480.1 L 191.0 479.2 L 192.9 478.4 L 194.7 477.6 L 196.5 476.7 L 198.3 475.9 L 200.1 475.0 L 201.9 474.1 L 203.7 473.2 L 205.5 472.2 L 207.3 471.3 L 209.0 470.4 L 210.8 469.4 L 212.6 468.5 L 214.3 467.5 L 216.1 466.6 L 217.9 465.7 L 219.7 464.8 L 221.5 464.0 L 223.3 463.1 L 225.2 462.3 L 227.0 461.4 L 228.8 460.5 L 230.6 459.6 L 232.3 458.7 L 234.1 457.7 L 235.9 456.7 L 237.6 455.7 L 239.3 454.7 L 241.1 453.7 L 242.8 452.8 L 244.6 451.8 L 246.4 450.9 L 248.2 450.0 L 250.0 449.2 L 251.8 448.3 L 253.7 447.5 L 255.5 446.6 L 257.3 445.8 L 259.1 444.9 L 260.8 443.9 L 262.6 442.9 L 264.3 441.9 L 266.0 440.8 L 267.7 439.8 L 269.4 438.7 L 271.2 437.7 L 272.9 436.7 L 274.7 435.8 L 276.5 435.0 L 278.4 434.2 L 280.2 433.4 L 282.1 432.7 L 283.9 431.9 L 285.8 431.0 L 287.5 430.0 L 289.2 429.0 L 290.9 427.9 L 292.5 426.7 L 294.1 425.5" pathLength="254.8" stroke-dasharray="254.8" stroke-dashoffset="254.8">
+<animate attributeName="stroke-dashoffset" values="254.8;0" dur="12.70s" repeatCount="indefinite" />
+</path>
+<circle cx="60.0" cy="520.0" r="4" fill="none" stroke="#e63946" stroke-width="1.4" />
+<circle r="5" fill="#e63946" stroke="#000" stroke-width="0.6">
+<animateMotion dur="12.70s" repeatCount="indefinite" rotate="0">
+<mpath xlink:href="#p0t0" href="#p0t0" />
+</animateMotion>
+</circle>
+<path id="p0t1" class="track" stroke="#1d3557" d="M 436.0 457.3 L 434.9 457.3 L 433.7 457.3 L 432.6 457.2 L 431.5 457.0 L 430.4 456.8 L 429.3 456.4 L 428.3 456.0 L 427.3 455.5 L 426.2 455.0 L 425.2 454.6 L 424.2 454.1 L 423.1 453.8 L 422.0 453.5 L 420.8 453.4 L 419.7 453.3 L 418.6 453.3 L 417.4 453.3 L 416.3 453.2 L 415.2 453.2 L 414.1 453.1 L 412.9 452.9 L 411.8 452.6 L 410.8 452.2 L 409.7 451.7 L 408.7 451.3 L 407.7 450.8 L 406.6 450.3 L 405.5 449.9 L 404.5 449.6 L 403.3 449.4 L 402.2 449.2 L 401.1 449.2 L 399.9 449.1 L 398.8 449.1 L 397.6 449.1 L 396.5 449.0 L 395.4 448.9 L 394.3 448.7 L 393.2 448.3 L 392.1 447.9 L 391.0 447.5 L 390.0 447.0 L 389.0 446.5 L 387.9 446.1 L 386.8 445.7 L 385.7 445.4 L 384.6 445.2 L 383.5 445.1 L 382.3 445.0 L 381.2 445.0 L 380.0 445.0 L 378.9 445.0 L 377.7 444.9 L 376.6 444.7 L 375.5 444.4 L 374.4 444.1 L 373.3 443.6 L 372.3 443.2 L 371.2 442.7 L 370.2 442.2 L 369.1 441.8 L 368.0 441.4 L 366.9 441.2 L 365.7 441.0 L 364.6 440.9 L 363.4 440.9 L 362.3 440.9 L 361.1 440.8 L 360.0 440.8 L 358.8 440.7 L 357.7 440.4 L 356.6 440.1 L 355.5 439.8 L 354.4 439.3 L 353.4 438.8 L 352.3 438.3 L 351.3 437.9 L 350.2 437.5 L 349.1 437.2 L 347.9 436.9 L 346.8 436.8 L 345.6 436.7 L 344.5 436.7 L 343.3 436.7 L 342.1 436.7 L 341.0 436.6 L 339.8 436.4 L 338.7 436.2 L 337.6 435.8 L 336.5 435.4 L 335.4 435.0 L 334.4 434.5 L 333.3 434.0 L 332.2 433.6 L 331.1 433.2 L 330.0 432.9 L 328.9 432.7 L 327.7 432.6 L 326.5 432.5 L 325.4 432.5 L 324.2 432.5 L 323.0 432.4 L 321.9 432.3 L 320.7 432.1 L 319.6 431.9 L 318.5 431.5 L 317.4 431.1 L 316.3 430.6 L 315.3 430.1 L 314.2 429.6 L 313.1 429.2 L 312.0 428.8 L 310.9 428.6 L 309.7 428.4 L 308.5 428.3 L 307.4 428.3 L 306.2 428.3 L 305.0 428.2 L 303.8 428.2 L 302.7 428.0 L 301.5 427.8 L 300.4 427.5 L 299.3 427.1 L 298.2 426.7 L 297.1 426.2 L 296.0 425.7 L 295.0 425.2" pathLength="146.3" stroke-dasharray="146.3" stroke-dashoffset="146.3">
+<animate attributeName="stroke-dashoffset" values="146.3;0" dur="12.70s" repeatCount="indefinite" />
+</path>
+<circle cx="436.0" cy="457.3" r="4" fill="none" stroke="#1d3557" stroke-width="1.4" />
+<circle r="5" fill="#1d3557" stroke="#000" stroke-width="0.6">
+<animateMotion dur="12.70s" repeatCount="indefinite" rotate="0">
+<mpath xlink:href="#p0t1" href="#p0t1" />
+</animateMotion>
+</circle>
+</g>
+<g transform="translate(680,60)">
+<rect class="panel" width="560" height="560" />
+<text class="title" x="10" y="18">TOP   X x Z</text>
+<text class="subtitle" x="10" y="32">X -&gt; range (horiz),  Z -&gt; cross (vert)</text>
+<line class="grid" x1="60.0" y1="50.0" x2="60.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="520.0" x2="530.0" y2="520.0" />
+<text class="tick" x="60.0" y="534.0" text-anchor="middle">0</text>
+<text class="tick" x="56.0" y="524.0" text-anchor="end">0</text>
+<line class="grid" x1="154.0" y1="50.0" x2="154.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="426.0" x2="530.0" y2="426.0" />
+<text class="tick" x="154.0" y="534.0" text-anchor="middle">1.5k</text>
+<text class="tick" x="56.0" y="430.0" text-anchor="end">1.5k</text>
+<line class="grid" x1="248.0" y1="50.0" x2="248.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="332.0" x2="530.0" y2="332.0" />
+<text class="tick" x="248.0" y="534.0" text-anchor="middle">3.0k</text>
+<text class="tick" x="56.0" y="336.0" text-anchor="end">3.0k</text>
+<line class="grid" x1="342.0" y1="50.0" x2="342.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="238.0" x2="530.0" y2="238.0" />
+<text class="tick" x="342.0" y="534.0" text-anchor="middle">4.5k</text>
+<text class="tick" x="56.0" y="242.0" text-anchor="end">4.5k</text>
+<line class="grid" x1="436.0" y1="50.0" x2="436.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="144.0" x2="530.0" y2="144.0" />
+<text class="tick" x="436.0" y="534.0" text-anchor="middle">6.0k</text>
+<text class="tick" x="56.0" y="148.0" text-anchor="end">6.0k</text>
+<line class="grid" x1="530.0" y1="50.0" x2="530.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="50.0" x2="530.0" y2="50.0" />
+<text class="tick" x="530.0" y="534.0" text-anchor="middle">7.5k</text>
+<text class="tick" x="56.0" y="54.0" text-anchor="end">7.5k</text>
+<line class="axis" x1="60.0" y1="50.0" x2="60.0" y2="520.0" />
+<line class="axis" x1="60.0" y1="520.0" x2="530.0" y2="520.0" />
+<path id="p1t0" class="track" stroke="#e63946" d="M 60.0 520.0 L 62.0 520.0 L 64.0 520.0 L 66.0 520.0 L 68.0 520.0 L 70.0 520.0 L 72.0 520.0 L 74.0 520.0 L 76.0 520.0 L 78.0 520.0 L 80.0 520.0 L 82.0 520.0 L 84.0 520.0 L 85.9 520.0 L 87.9 520.0 L 89.9 520.0 L 91.9 520.0 L 93.8 520.0 L 95.8 520.0 L 97.7 520.0 L 99.7 520.0 L 101.7 520.0 L 103.6 520.0 L 105.6 520.0 L 107.5 520.0 L 109.4 520.0 L 111.4 520.0 L 113.3 520.0 L 115.2 520.0 L 117.1 520.0 L 119.0 520.0 L 120.9 520.0 L 122.8 520.0 L 124.7 520.0 L 126.6 520.0 L 128.5 520.0 L 130.4 520.0 L 132.3 520.0 L 134.2 520.0 L 136.1 520.0 L 137.9 520.0 L 139.8 520.0 L 141.7 520.0 L 143.5 520.0 L 145.4 520.0 L 147.2 520.0 L 149.1 520.0 L 150.9 520.0 L 152.8 520.0 L 154.6 520.0 L 156.4 520.0 L 158.3 520.0 L 160.1 520.0 L 162.0 520.0 L 163.8 520.0 L 165.7 520.0 L 167.5 520.0 L 169.4 520.0 L 171.2 520.0 L 173.0 520.0 L 174.8 520.0 L 176.6 520.0 L 178.4 520.0 L 180.2 520.0 L 182.0 520.0 L 183.8 520.0 L 185.6 520.0 L 187.4 520.0 L 189.2 520.0 L 191.0 520.0 L 192.9 520.0 L 194.7 520.0 L 196.5 520.0 L 198.3 520.0 L 200.1 520.0 L 201.9 520.0 L 203.7 520.0 L 205.5 520.0 L 207.3 520.0 L 209.0 520.0 L 210.8 520.0 L 212.6 520.0 L 214.3 520.0 L 216.1 520.0 L 217.9 520.0 L 219.7 520.0 L 221.5 520.0 L 223.3 520.0 L 225.2 520.0 L 227.0 520.0 L 228.8 520.0 L 230.6 520.0 L 232.3 520.0 L 234.1 520.0 L 235.9 520.0 L 237.6 520.0 L 239.3 520.0 L 241.1 520.0 L 242.8 520.0 L 244.6 520.0 L 246.4 520.0 L 248.2 520.0 L 250.0 520.0 L 251.8 520.0 L 253.7 520.0 L 255.5 520.0 L 257.3 520.0 L 259.1 520.0 L 260.8 520.0 L 262.6 520.0 L 264.3 520.0 L 266.0 520.0 L 267.7 520.0 L 269.4 520.0 L 271.2 520.0 L 272.9 520.0 L 274.7 520.0 L 276.5 520.0 L 278.4 520.0 L 280.2 520.0 L 282.1 520.0 L 283.9 520.0 L 285.8 520.0 L 287.5 520.0 L 289.2 520.0 L 290.9 520.0 L 292.5 520.0 L 294.1 520.0" pathLength="234.1" stroke-dasharray="234.1" stroke-dashoffset="234.1">
+<animate attributeName="stroke-dashoffset" values="234.1;0" dur="12.70s" repeatCount="indefinite" />
+</path>
+<circle cx="60.0" cy="520.0" r="4" fill="none" stroke="#e63946" stroke-width="1.4" />
+<circle r="5" fill="#e63946" stroke="#000" stroke-width="0.6">
+<animateMotion dur="12.70s" repeatCount="indefinite" rotate="0">
+<mpath xlink:href="#p1t0" href="#p1t0" />
+</animateMotion>
+</circle>
+<path id="p1t1" class="track" stroke="#1d3557" d="M 436.0 520.0 L 434.9 520.0 L 433.7 520.0 L 432.6 520.0 L 431.5 520.0 L 430.4 520.0 L 429.3 520.0 L 428.3 520.0 L 427.3 520.0 L 426.2 520.0 L 425.2 520.0 L 424.2 520.0 L 423.1 520.0 L 422.0 520.0 L 420.8 520.0 L 419.7 520.0 L 418.6 520.0 L 417.4 520.0 L 416.3 520.0 L 415.2 520.0 L 414.1 520.0 L 412.9 520.0 L 411.8 520.0 L 410.8 520.0 L 409.7 520.0 L 408.7 520.0 L 407.7 520.0 L 406.6 520.0 L 405.5 520.0 L 404.5 520.0 L 403.3 520.0 L 402.2 520.0 L 401.1 520.0 L 399.9 520.0 L 398.8 520.0 L 397.6 520.0 L 396.5 520.0 L 395.4 520.0 L 394.3 520.0 L 393.2 520.0 L 392.1 520.0 L 391.0 520.0 L 390.0 520.0 L 389.0 520.0 L 387.9 520.0 L 386.8 520.0 L 385.7 520.0 L 384.6 520.0 L 383.5 520.0 L 382.3 520.0 L 381.2 520.0 L 380.0 520.0 L 378.9 520.0 L 377.7 520.0 L 376.6 520.0 L 375.5 520.0 L 374.4 520.0 L 373.3 520.0 L 372.3 520.0 L 371.2 520.0 L 370.2 520.0 L 369.1 520.0 L 368.0 520.0 L 366.9 520.0 L 365.7 520.0 L 364.6 520.0 L 363.4 520.0 L 362.3 520.0 L 361.1 520.0 L 360.0 520.0 L 358.8 520.0 L 357.7 520.0 L 356.6 520.0 L 355.5 520.0 L 354.4 520.0 L 353.4 520.0 L 352.3 520.0 L 351.3 520.0 L 350.2 520.0 L 349.1 520.0 L 347.9 520.0 L 346.8 520.0 L 345.6 520.0 L 344.5 520.0 L 343.3 520.0 L 342.1 520.0 L 341.0 520.0 L 339.8 520.0 L 338.7 520.0 L 337.6 520.0 L 336.5 520.0 L 335.4 520.0 L 334.4 520.0 L 333.3 520.0 L 332.2 520.0 L 331.1 520.0 L 330.0 520.0 L 328.9 520.0 L 327.7 520.0 L 326.5 520.0 L 325.4 520.0 L 324.2 520.0 L 323.0 520.0 L 321.9 520.0 L 320.7 520.0 L 319.6 520.0 L 318.5 520.0 L 317.4 520.0 L 316.3 520.0 L 315.3 520.0 L 314.2 520.0 L 313.1 520.0 L 312.0 520.0 L 310.9 520.0 L 309.7 520.0 L 308.5 520.0 L 307.4 520.0 L 306.2 520.0 L 305.0 520.0 L 303.8 520.0 L 302.7 520.0 L 301.5 520.0 L 300.4 520.0 L 299.3 520.0 L 298.2 520.0 L 297.1 520.0 L 296.0 520.0 L 295.0 520.0" pathLength="141.0" stroke-dasharray="141.0" stroke-dashoffset="141.0">
+<animate attributeName="stroke-dashoffset" values="141.0;0" dur="12.70s" repeatCount="indefinite" />
+</path>
+<circle cx="436.0" cy="520.0" r="4" fill="none" stroke="#1d3557" stroke-width="1.4" />
+<circle r="5" fill="#1d3557" stroke="#000" stroke-width="0.6">
+<animateMotion dur="12.70s" repeatCount="indefinite" rotate="0">
+<mpath xlink:href="#p1t1" href="#p1t1" />
+</animateMotion>
+</circle>
+</g>
+<g transform="translate(60,680)">
+<rect class="panel" width="560" height="560" />
+<text class="title" x="10" y="18">FRONT Z x Y</text>
+<text class="subtitle" x="10" y="32">Z -&gt; cross (horiz),  Y -&gt; alt (vert)</text>
+<line class="grid" x1="60.0" y1="50.0" x2="60.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="520.0" x2="530.0" y2="520.0" />
+<text class="tick" x="60.0" y="534.0" text-anchor="middle">0</text>
+<text class="tick" x="56.0" y="524.0" text-anchor="end">0</text>
+<line class="grid" x1="154.0" y1="50.0" x2="154.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="426.0" x2="530.0" y2="426.0" />
+<text class="tick" x="154.0" y="534.0" text-anchor="middle">1.5k</text>
+<text class="tick" x="56.0" y="430.0" text-anchor="end">1.5k</text>
+<line class="grid" x1="248.0" y1="50.0" x2="248.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="332.0" x2="530.0" y2="332.0" />
+<text class="tick" x="248.0" y="534.0" text-anchor="middle">3.0k</text>
+<text class="tick" x="56.0" y="336.0" text-anchor="end">3.0k</text>
+<line class="grid" x1="342.0" y1="50.0" x2="342.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="238.0" x2="530.0" y2="238.0" />
+<text class="tick" x="342.0" y="534.0" text-anchor="middle">4.5k</text>
+<text class="tick" x="56.0" y="242.0" text-anchor="end">4.5k</text>
+<line class="grid" x1="436.0" y1="50.0" x2="436.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="144.0" x2="530.0" y2="144.0" />
+<text class="tick" x="436.0" y="534.0" text-anchor="middle">6.0k</text>
+<text class="tick" x="56.0" y="148.0" text-anchor="end">6.0k</text>
+<line class="grid" x1="530.0" y1="50.0" x2="530.0" y2="520.0" />
+<line class="grid" x1="60.0" y1="50.0" x2="530.0" y2="50.0" />
+<text class="tick" x="530.0" y="534.0" text-anchor="middle">7.5k</text>
+<text class="tick" x="56.0" y="54.0" text-anchor="end">7.5k</text>
+<line class="axis" x1="60.0" y1="50.0" x2="60.0" y2="520.0" />
+<line class="axis" x1="60.0" y1="520.0" x2="530.0" y2="520.0" />
+<line class="ground" x1="60.0" y1="520.0" x2="530.0" y2="520.0" />
+<path id="p2t0" class="track" stroke="#e63946" d="M 60.0 520.0 L 60.0 520.0 L 60.0 520.0 L 60.0 519.9 L 60.0 519.8 L 60.0 519.7 L 60.0 519.6 L 60.0 519.4 L 60.0 519.2 L 60.0 519.0 L 60.0 518.7 L 60.0 518.5 L 60.0 518.1 L 60.0 517.8 L 60.0 517.4 L 60.0 517.1 L 60.0 516.7 L 60.0 516.3 L 60.0 515.9 L 60.0 515.4 L 60.0 515.0 L 60.0 514.6 L 60.0 514.1 L 60.0 513.6 L 60.0 513.1 L 60.0 512.6 L 60.0 512.0 L 60.0 511.4 L 60.0 510.8 L 60.0 510.2 L 60.0 509.6 L 60.0 508.9 L 60.0 508.3 L 60.0 507.6 L 60.0 507.0 L 60.0 506.3 L 60.0 505.7 L 60.0 505.0 L 60.0 504.3 L 60.0 503.7 L 60.0 503.0 L 60.0 502.3 L 60.0 501.5 L 60.0 500.8 L 60.0 500.0 L 60.0 499.2 L 60.0 498.4 L 60.0 497.6 L 60.0 496.8 L 60.0 496.0 L 60.0 495.2 L 60.0 494.4 L 60.0 493.6 L 60.0 492.9 L 60.0 492.1 L 60.0 491.3 L 60.0 490.5 L 60.0 489.7 L 60.0 488.9 L 60.0 488.0 L 60.0 487.1 L 60.0 486.3 L 60.0 485.4 L 60.0 484.5 L 60.0 483.6 L 60.0 482.7 L 60.0 481.8 L 60.0 480.9 L 60.0 480.1 L 60.0 479.2 L 60.0 478.4 L 60.0 477.6 L 60.0 476.7 L 60.0 475.9 L 60.0 475.0 L 60.0 474.1 L 60.0 473.2 L 60.0 472.2 L 60.0 471.3 L 60.0 470.4 L 60.0 469.4 L 60.0 468.5 L 60.0 467.5 L 60.0 466.6 L 60.0 465.7 L 60.0 464.8 L 60.0 464.0 L 60.0 463.1 L 60.0 462.3 L 60.0 461.4 L 60.0 460.5 L 60.0 459.6 L 60.0 458.7 L 60.0 457.7 L 60.0 456.7 L 60.0 455.7 L 60.0 454.7 L 60.0 453.7 L 60.0 452.8 L 60.0 451.8 L 60.0 450.9 L 60.0 450.0 L 60.0 449.2 L 60.0 448.3 L 60.0 447.5 L 60.0 446.6 L 60.0 445.8 L 60.0 444.9 L 60.0 443.9 L 60.0 442.9 L 60.0 441.9 L 60.0 440.8 L 60.0 439.8 L 60.0 438.7 L 60.0 437.7 L 60.0 436.7 L 60.0 435.8 L 60.0 435.0 L 60.0 434.2 L 60.0 433.4 L 60.0 432.7 L 60.0 431.9 L 60.0 431.0 L 60.0 430.0 L 60.0 429.0 L 60.0 427.9 L 60.0 426.7 L 60.0 425.5" pathLength="94.5" stroke-dasharray="94.5" stroke-dashoffset="94.5">
+<animate attributeName="stroke-dashoffset" values="94.5;0" dur="12.70s" repeatCount="indefinite" />
+</path>
+<circle cx="60.0" cy="520.0" r="4" fill="none" stroke="#e63946" stroke-width="1.4" />
+<circle r="5" fill="#e63946" stroke="#000" stroke-width="0.6">
+<animateMotion dur="12.70s" repeatCount="indefinite" rotate="0">
+<mpath xlink:href="#p2t0" href="#p2t0" />
+</animateMotion>
+</circle>
+<path id="p2t1" class="track" stroke="#1d3557" d="M 60.0 457.3 L 60.0 457.3 L 60.0 457.3 L 60.0 457.2 L 60.0 457.0 L 60.0 456.8 L 60.0 456.4 L 60.0 456.0 L 60.0 455.5 L 60.0 455.0 L 60.0 454.6 L 60.0 454.1 L 60.0 453.8 L 60.0 453.5 L 60.0 453.4 L 60.0 453.3 L 60.0 453.3 L 60.0 453.3 L 60.0 453.2 L 60.0 453.2 L 60.0 453.1 L 60.0 452.9 L 60.0 452.6 L 60.0 452.2 L 60.0 451.7 L 60.0 451.3 L 60.0 450.8 L 60.0 450.3 L 60.0 449.9 L 60.0 449.6 L 60.0 449.4 L 60.0 449.2 L 60.0 449.2 L 60.0 449.1 L 60.0 449.1 L 60.0 449.1 L 60.0 449.0 L 60.0 448.9 L 60.0 448.7 L 60.0 448.3 L 60.0 447.9 L 60.0 447.5 L 60.0 447.0 L 60.0 446.5 L 60.0 446.1 L 60.0 445.7 L 60.0 445.4 L 60.0 445.2 L 60.0 445.1 L 60.0 445.0 L 60.0 445.0 L 60.0 445.0 L 60.0 445.0 L 60.0 444.9 L 60.0 444.7 L 60.0 444.4 L 60.0 444.1 L 60.0 443.6 L 60.0 443.2 L 60.0 442.7 L 60.0 442.2 L 60.0 441.8 L 60.0 441.4 L 60.0 441.2 L 60.0 441.0 L 60.0 440.9 L 60.0 440.9 L 60.0 440.9 L 60.0 440.8 L 60.0 440.8 L 60.0 440.7 L 60.0 440.4 L 60.0 440.1 L 60.0 439.8 L 60.0 439.3 L 60.0 438.8 L 60.0 438.3 L 60.0 437.9 L 60.0 437.5 L 60.0 437.2 L 60.0 436.9 L 60.0 436.8 L 60.0 436.7 L 60.0 436.7 L 60.0 436.7 L 60.0 436.7 L 60.0 436.6 L 60.0 436.4 L 60.0 436.2 L 60.0 435.8 L 60.0 435.4 L 60.0 435.0 L 60.0 434.5 L 60.0 434.0 L 60.0 433.6 L 60.0 433.2 L 60.0 432.9 L 60.0 432.7 L 60.0 432.6 L 60.0 432.5 L 60.0 432.5 L 60.0 432.5 L 60.0 432.4 L 60.0 432.3 L 60.0 432.1 L 60.0 431.9 L 60.0 431.5 L 60.0 431.1 L 60.0 430.6 L 60.0 430.1 L 60.0 429.6 L 60.0 429.2 L 60.0 428.8 L 60.0 428.6 L 60.0 428.4 L 60.0 428.3 L 60.0 428.3 L 60.0 428.3 L 60.0 428.2 L 60.0 428.2 L 60.0 428.0 L 60.0 427.8 L 60.0 427.5 L 60.0 427.1 L 60.0 426.7 L 60.0 426.2 L 60.0 425.7 L 60.0 425.2" pathLength="32.1" stroke-dasharray="32.1" stroke-dashoffset="32.1">
+<animate attributeName="stroke-dashoffset" values="32.1;0" dur="12.70s" repeatCount="indefinite" />
+</path>
+<circle cx="60.0" cy="457.3" r="4" fill="none" stroke="#1d3557" stroke-width="1.4" />
+<circle r="5" fill="#1d3557" stroke="#000" stroke-width="0.6">
+<animateMotion dur="12.70s" repeatCount="indefinite" rotate="0">
+<mpath xlink:href="#p2t1" href="#p2t1" />
+</animateMotion>
+</circle>
+</g>
+<g transform="translate(680,680)">
+<rect class="panel" width="560" height="560" />
+<text class="title" x="20" y="38">weaving — missile (red) vs target (blue)</text>
+<text class="summary" x="20" y="70">tracks        : 2</text>
+<text class="summary" x="20" y="92">total samples : 256</text>
+<text class="summary" x="20" y="114">duration      : 12.70 s</text>
+<text class="summary" x="20" y="136"></text>
+<text class="summary-dim" x="20" y="158">legend:</text>
+<line x1="30" y1="180.0" x2="60" y2="180.0" stroke="#e63946" stroke-width="2.2" />
+<circle cx="45" cy="180.0" r="3.5" fill="#e63946" />
+<text class="summary-dim" x="70" y="184.0">missile    end (3736, 1508, 0) m  (128 samples)</text>
+<line x1="30" y1="202.0" x2="60" y2="202.0" stroke="#1d3557" stroke-width="2.2" />
+<circle cx="45" cy="202.0" r="3.5" fill="#1d3557" />
+<text class="summary-dim" x="70" y="206.0">target     end (3749, 1512, 0) m  (128 samples)</text>
+</g>
+</svg>
