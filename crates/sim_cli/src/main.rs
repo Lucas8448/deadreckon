@@ -3,12 +3,13 @@ use sim_core::{Scenario, SensorNoise, Sim, Status};
 
 fn print_usage() {
     eprintln!("Usage:");
-    eprintln!("  sim_cli [scenario]              Run a single scenario");
-    eprintln!("  sim_cli [scenario] --noise=<level>  Run with sensor noise (perfect|realistic|degraded)");
-    eprintln!("  sim_cli sweep [scenario] [N]    Run N Monte Carlo trials (default: 500)");
-    eprintln!("  sim_cli sweep [scenario] [N] --nav=<delta>  Sweep nav_const ± delta");
-    eprintln!("  sim_cli sweep [scenario] [N] --amax=<delta> Sweep a_max ± delta");
+    eprintln!("  sim_cli [scenario]                       Run a single 3D scenario");
+    eprintln!("  sim_cli [scenario] --noise=<level>       Run with sensor noise (perfect|realistic|degraded|extreme)");
+    eprintln!("  sim_cli sweep [scenario] [N]             Run N Monte Carlo trials (default: 500)");
+    eprintln!("  sim_cli sweep [scenario] [N] --nav=<delta>    Sweep nav_const ± delta");
+    eprintln!("  sim_cli sweep [scenario] [N] --amax=<delta>   Sweep a_max ± delta");
     eprintln!("  sim_cli sweep [scenario] [N] --noise=<level>  Add sensor noise");
+    eprintln!("  sim_cli sweep [scenario] [N] --seed=<u64>     Set RNG seed");
     eprintln!();
     eprintln!("Available scenarios:");
     for s in Scenario::all() {
@@ -42,20 +43,25 @@ fn parse_noise(args: &[String]) -> SensorNoise {
     SensorNoise::perfect()
 }
 
-fn run_single(args: &[String]) {
-    let scenario_name = args.first().map(|s| s.as_str()).unwrap_or("baseline");
-    let scenario = match Scenario::by_name(scenario_name) {
+fn lookup_scenario(name: &str) -> Scenario {
+    match Scenario::by_name(name) {
         Some(s) => s,
         None => {
-            eprintln!("Unknown scenario: '{}'", scenario_name);
+            eprintln!("Unknown scenario: '{}'", name);
             print_usage();
             std::process::exit(1);
         }
-    };
+    }
+}
+
+fn run_single(args: &[String]) {
+    let scenario_name = args.first().map(|s| s.as_str()).unwrap_or("baseline");
+    let scenario = lookup_scenario(scenario_name);
 
     let noise = parse_noise(args);
     let noise_label = if noise.range_std > 0.0 { "with noise" } else { "perfect" };
-    println!("=== Scenario: {} ({}) ===", scenario.name, noise_label);
+    println!("=== Scenario: {} (3D, {}) ===", scenario.name, noise_label);
+
     let mut sim = Sim::with_sensor_noise(scenario.missile, scenario.target, scenario.params, noise, 42);
 
     let mut status = Status::Running;
@@ -63,39 +69,53 @@ fn run_single(args: &[String]) {
         status = sim.step();
     }
 
+    let mp = sim.missile_pos();
+    let mv = sim.missile_vel();
+    let tp = sim.target_pos();
+    let tv = sim.target_vel();
+
     println!("status: {:?}", status);
-    println!("t: {:.2}s  range: {:.2}m  closing: {:.2}m/s  los_rate: {:.6}rad/s  a_cmd: {:.2}m/s^2",
+    println!(
+        "t: {:.2}s  range: {:.2}m  closing: {:.2}m/s  los_rate: {:.6}rad/s  a_cmd: {:.2}m/s^2",
         sim.last.t, sim.last.range, sim.last.closing_speed, sim.last.los_rate, sim.last.a_cmd
     );
-    println!("missile.p: {:?} missile.v: {:?}", sim.missile.p, sim.missile.v);
-    println!("target.p:  {:?} target.v:  {:?}", sim.target.p, sim.target.v);
+    println!(
+        "missile.p: ({:.1}, {:.1}, {:.1})  v: ({:.1}, {:.1}, {:.1})",
+        mp.x, mp.y, mp.z, mv.x, mv.y, mv.z
+    );
+    println!(
+        "target.p:  ({:.1}, {:.1}, {:.1})  v: ({:.1}, {:.1}, {:.1})",
+        tp.x, tp.y, tp.z, tv.x, tv.y, tv.z
+    );
 }
 
 fn run_monte_carlo(args: &[String]) {
     let scenario_name = args.first().map(|s| s.as_str()).unwrap_or("baseline");
-    let scenario = match Scenario::by_name(scenario_name) {
-        Some(s) => s,
-        None => {
-            eprintln!("Unknown scenario: '{}'", scenario_name);
-            print_usage();
-            std::process::exit(1);
-        }
-    };
+    let scenario = lookup_scenario(scenario_name);
 
+    // Trial count: any positional non-flag arg after the scenario name. This
+    // avoids the bug where `sim_cli sweep baseline --noise=realistic` (no N)
+    // silently dropped the flag because we did `args.skip(2)`.
     let trials: usize = args
-        .get(1)
+        .iter()
+        .skip(1)
+        .find(|a| !a.starts_with("--"))
         .and_then(|s| s.parse().ok())
         .unwrap_or(500);
+    if trials == 0 {
+        eprintln!("sweep: trial count must be > 0");
+        std::process::exit(1);
+    }
 
     let mut config = SweepConfig::new(scenario.clone(), trials);
 
-    for arg in args.iter().skip(2) {
+    for arg in args.iter().filter(|a| a.starts_with("--")) {
         if let Some(val) = arg.strip_prefix("--nav=") {
-            if let Ok(delta) = val.parse::<f32>() {
+            if let Ok(delta) = val.parse::<f64>() {
                 config = config.with_nav_const_sweep(delta);
             }
         } else if let Some(val) = arg.strip_prefix("--amax=") {
-            if let Ok(delta) = val.parse::<f32>() {
+            if let Ok(delta) = val.parse::<f64>() {
                 config = config.with_a_max_sweep(delta);
             }
         } else if let Some(val) = arg.strip_prefix("--seed=") {
@@ -113,7 +133,7 @@ fn run_monte_carlo(args: &[String]) {
         }
     }
 
-    println!("=== Monte Carlo: {} ({} trials) ===", scenario.name, trials);
+    println!("=== Monte Carlo: {} (3D, {} trials) ===", scenario.name, trials);
     if config.perturb.nav_const > 0.0 {
         println!("  nav_const sweep: ±{:.1}", config.perturb.nav_const);
     }
@@ -121,8 +141,10 @@ fn run_monte_carlo(args: &[String]) {
         println!("  a_max sweep: ±{:.1}", config.perturb.a_max);
     }
     if config.perturb.sensor_noise.range_std > 0.0 {
-        println!("  sensor noise: range_std={:.1}m angle_rate_std={:.4}rad/s", 
-            config.perturb.sensor_noise.range_std, config.perturb.sensor_noise.angle_rate_std);
+        println!(
+            "  sensor noise: range_std={:.1}m angle_rate_std={:.4}rad/s",
+            config.perturb.sensor_noise.range_std, config.perturb.sensor_noise.angle_rate_std
+        );
     }
     println!();
 
