@@ -75,7 +75,9 @@ pub fn head_on() -> Scenario {
             ..missile_default()
         },
         target: Target {
-            p: Vec3::new(8000.0, 100.0, 0.0),
+            // True head-on: same altitude (Y=0) and cross-range (Z=0) as the
+            // missile, flying back along -X. No offset bypass.
+            p: Vec3::new(8000.0, 0.0, 0.0),
             v: Vec3::new(-200.0, 0.0, 0.0),
             mass: 5_000.0,
             maneuver: TargetManeuver::ConstantVelocity,
