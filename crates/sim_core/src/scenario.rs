@@ -1,4 +1,9 @@
-use glam::Vec2;
+//! Built-in 3D engagement scenarios.
+//!
+//! Conventions: missile starts at origin moving down +X; target somewhere
+//! downrange. Y is altitude, Z is cross-range. Speeds in m/s, ranges in m.
+
+use physics_sandbox::math::Vec3;
 
 use crate::{Missile, Params, Target, TargetManeuver};
 
@@ -29,149 +34,149 @@ impl Scenario {
     }
 }
 
-// Baseline
-pub fn baseline() -> Scenario {
-    Scenario {
-        name: "baseline",
-        missile: Missile {
-            p: Vec2::new(0.0, 0.0),
-            v: Vec2::new(250.0, 0.0),
-            a_max: 60.0,
-            gimbal_limit: 0.52,
-        },
-        target: Target {
-            p: Vec2::new(6000.0, 1500.0),
-            v: Vec2::new(-180.0, 0.0),
-            maneuver: TargetManeuver::ConstantVelocity,
-        },
-        params: Params {
-            dt: 0.02,
-            nav_const: 4.0,
-            kill_radius: 10.0,
-            max_time: 60.0,
-        },
+fn default_params() -> Params {
+    Params {
+        dt: 0.02,
+        nav_const: 4.0,
+        kill_radius: 15.0,
+        max_time: 60.0,
     }
 }
 
-// target flying directly toward missile.
+fn missile_default() -> Missile {
+    Missile {
+        p: Vec3::new(0.0, 0.0, 0.0),
+        v: Vec3::new(250.0, 0.0, 0.0),
+        mass: 100.0,
+        a_max: 80.0,
+        gimbal_limit: 0.7, // ~40°
+    }
+}
+
+pub fn baseline() -> Scenario {
+    Scenario {
+        name: "baseline",
+        missile: missile_default(),
+        target: Target {
+            p: Vec3::new(6000.0, 1500.0, 0.0),
+            v: Vec3::new(-180.0, 0.0, 0.0),
+            mass: 5_000.0,
+            maneuver: TargetManeuver::ConstantVelocity,
+        },
+        params: default_params(),
+    }
+}
+
 pub fn head_on() -> Scenario {
     Scenario {
         name: "head_on",
         missile: Missile {
-            p: Vec2::new(0.0, 0.0),
-            v: Vec2::new(300.0, 0.0),
-            a_max: 60.0,
-            gimbal_limit: 0.52,
+            v: Vec3::new(300.0, 0.0, 0.0),
+            ..missile_default()
         },
         target: Target {
-            p: Vec2::new(8000.0, 0.0),
-            v: Vec2::new(-200.0, 0.0),
+            p: Vec3::new(8000.0, 100.0, 0.0),
+            v: Vec3::new(-200.0, 0.0, 0.0),
+            mass: 5_000.0,
             maneuver: TargetManeuver::ConstantVelocity,
         },
-        params: Params {
-            dt: 0.02,
-            nav_const: 4.0,
-            kill_radius: 10.0,
-            max_time: 60.0,
-        },
+        params: default_params(),
     }
 }
 
-// target moving perpendicular to initial LOS.
 pub fn crossing() -> Scenario {
     Scenario {
         name: "crossing",
         missile: Missile {
-            p: Vec2::new(0.0, 0.0),
-            v: Vec2::new(280.0, 0.0),
-            a_max: 80.0,
-            gimbal_limit: 0.52,
+            v: Vec3::new(280.0, 0.0, 0.0),
+            a_max: 100.0,
+            ..missile_default()
         },
         target: Target {
-            p: Vec2::new(5000.0, 0.0),
-            v: Vec2::new(0.0, 150.0), // moving up
+            p: Vec3::new(5000.0, 1000.0, 0.0),
+            // Crossing in the cross-range (Z) direction so the engagement
+            // exercises out-of-plane guidance.
+            v: Vec3::new(0.0, 0.0, 200.0),
+            mass: 5_000.0,
             maneuver: TargetManeuver::ConstantVelocity,
         },
-        params: Params {
-            dt: 0.02,
-            nav_const: 4.0,
-            kill_radius: 10.0,
-            max_time: 60.0,
-        },
+        params: default_params(),
     }
 }
 
-// supersonic target
 pub fn fast_target() -> Scenario {
     Scenario {
         name: "fast_target",
         missile: Missile {
-            p: Vec2::new(0.0, 0.0),
-            v: Vec2::new(350.0, 0.0),
-            a_max: 100.0,
-            gimbal_limit: 0.52,
+            v: Vec3::new(350.0, 0.0, 0.0),
+            a_max: 120.0,
+            ..missile_default()
         },
         target: Target {
-            p: Vec2::new(10000.0, 2000.0),
-            v: Vec2::new(-400.0, 50.0),
+            p: Vec3::new(10_000.0, 2_000.0, 1_500.0),
+            v: Vec3::new(-400.0, 50.0, -50.0),
+            mass: 5_000.0,
             maneuver: TargetManeuver::ConstantVelocity,
         },
         params: Params {
-            dt: 0.02,
-            nav_const: 5.0, // higher N
-            kill_radius: 15.0,
+            nav_const: 5.0,
+            kill_radius: 20.0,
             max_time: 45.0,
+            ..default_params()
         },
     }
 }
 
-/// Target executing a constant-rate turn (the "oh damn" moment).
 pub fn turning_target() -> Scenario {
     Scenario {
         name: "turning",
         missile: Missile {
-            p: Vec2::new(0.0, 0.0),
-            v: Vec2::new(300.0, 0.0),
-            a_max: 100.0,
-            gimbal_limit: 0.52,
+            v: Vec3::new(300.0, 0.0, 0.0),
+            a_max: 120.0,
+            ..missile_default()
         },
         target: Target {
-            p: Vec2::new(5000.0, 500.0),
-            v: Vec2::new(-150.0, 0.0),
-            maneuver: TargetManeuver::ConstantTurn { omega: 0.15 }, // ~8.6 deg/s
+            p: Vec3::new(5000.0, 800.0, 0.0),
+            v: Vec3::new(-150.0, 0.0, 0.0),
+            // Yaw turn around the world Y (up) axis — ~8.6 deg/s.
+            maneuver: TargetManeuver::ConstantTurn {
+                axis: Vec3::new(0.0, 1.0, 0.0),
+                omega: 0.15,
+            },
+            mass: 5_000.0,
         },
         params: Params {
-            dt: 0.02,
             nav_const: 4.5,
-            kill_radius: 12.0,
-            max_time: 60.0,
+            kill_radius: 18.0,
+            ..default_params()
         },
     }
 }
 
-/// Target weaving sinusoidally—hard to track.
 pub fn weaving_target() -> Scenario {
     Scenario {
         name: "weaving",
         missile: Missile {
-            p: Vec2::new(0.0, 0.0),
-            v: Vec2::new(320.0, 0.0),
-            a_max: 120.0,
-            gimbal_limit: 0.52,
+            v: Vec3::new(320.0, 0.0, 0.0),
+            a_max: 140.0,
+            ..missile_default()
         },
         target: Target {
-            p: Vec2::new(6000.0, 0.0),
-            v: Vec2::new(-180.0, 0.0),
+            p: Vec3::new(6000.0, 1000.0, 0.0),
+            v: Vec3::new(-180.0, 0.0, 0.0),
+            // Weave around the up axis: lateral (Z-direction) sinusoidal
+            // acceleration ~15g peak.
             maneuver: TargetManeuver::Weave {
-                amplitude: 150.0, // m/s² peak (~15g, aggressive)
-                freq: 0.6,        // Hz
+                axis: Vec3::new(0.0, 1.0, 0.0),
+                amplitude: 150.0,
+                freq: 0.6,
             },
+            mass: 5_000.0,
         },
         params: Params {
-            dt: 0.02,
             nav_const: 5.0,
-            kill_radius: 15.0,
-            max_time: 60.0,
+            kill_radius: 20.0,
+            ..default_params()
         },
     }
 }
@@ -181,11 +186,9 @@ mod tests {
     use super::*;
     use crate::{Sim, Status, TargetManeuver};
 
-    /// Non-maneuvering scenarios should always hit.
     #[test]
     fn constant_velocity_scenarios_hit() {
         for scenario in Scenario::all() {
-            // Only test constant-velocity targets (guaranteed hits)
             if !matches!(scenario.target.maneuver, TargetManeuver::ConstantVelocity) {
                 continue;
             }
@@ -197,16 +200,15 @@ mod tests {
             assert_eq!(
                 status,
                 Status::Hit,
-                "scenario '{}' did not hit (got {:?})",
+                "scenario '{}' did not hit (final range {:.2}m)",
                 scenario.name,
-                status
+                sim.last.range
             );
         }
     }
 
-    /// Maneuvering scenarios should at least complete without panic.
     #[test]
-    fn maneuvering_scenarios_run() {
+    fn maneuvering_scenarios_run_to_completion() {
         for scenario in Scenario::all() {
             if matches!(scenario.target.maneuver, TargetManeuver::ConstantVelocity) {
                 continue;
@@ -216,9 +218,8 @@ mod tests {
             while status == Status::Running {
                 status = sim.step();
             }
-            // Just verify it terminates (Hit or Timeout)
             assert!(
-                status == Status::Hit || status == Status::Timeout,
+                matches!(status, Status::Hit | Status::Timeout | Status::LostLock),
                 "scenario '{}' unexpected status: {:?}",
                 scenario.name,
                 status
