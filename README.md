@@ -1,6 +1,8 @@
 # Deadreckon
 
-Deadreckon is a deterministic 3D missile-guidance and interception simulator for exploring the same feedback loop that shows up in flight software and avionics: estimate relative state from imperfect measurements, turn that estimate into a guidance command, and verify whether the commanded trajectory produces an intercept. The current implementation keeps the estimator simple on purpose--it uses the latest noisy seeker observation directly--so the guidance, sensing, and engagement bookkeeping are easy to inspect before adding heavier state estimation such as an EKF.
+Deadreckon is a compact Rust simulation portfolio project: deterministic 3D dynamics, noisy sensing, proportional-navigation guidance, Monte Carlo runs, and SVG/terminal visualization in a small workspace. It is built to show systems judgment--clear math, reproducible scenarios, bounded assumptions, and testable simulation code--rather than production weapon software.
+
+Deadreckon is a deterministic 3D guided-flight intercept simulator for exploring the same feedback loop that shows up in flight software and avionics: estimate relative state from imperfect measurements, turn that estimate into a guidance command, and verify whether the commanded trajectory closes range. The current implementation keeps the estimator simple on purpose--it uses the latest noisy seeker observation directly--so the guidance, sensing, and engagement bookkeeping are easy to inspect before adding heavier state estimation such as an EKF.
 
 ## How it works
 
@@ -8,11 +10,11 @@ The simulator is a Rust workspace with a reusable core crate, a CLI runner, and 
 
 ```mermaid
 flowchart LR
-    A["True 3D state<br/>missile p,v<br/>target p,v"] --> B["Geometry<br/>range, closing speed,<br/>LOS unit vector, LOS rate"]
+    A["True 3D state<br/>vehicle p,v<br/>target p,v"] --> B["Geometry<br/>range, closing speed,<br/>LOS unit vector, LOS rate"]
     B --> C["Noisy seeker model<br/>range noise, range-rate noise,<br/>bearing kick, LOS-rate noise"]
     C --> D["Estimator boundary<br/>ObservedState direct measurement<br/>(no recursive filter yet)"]
     D --> E["Guidance law<br/>3D true proportional navigation<br/>projected lateral acceleration"]
-    E --> F["Commanded intercept<br/>force = mass * a_cmd<br/>RK4 propagation"]
+    E --> F["Commanded trajectory<br/>force = mass * a_cmd<br/>RK4 propagation"]
     F --> G{"Engagement status"}
     G -->|"true range <= kill radius"| H["Hit"]
     G -->|"time >= max_time"| I["Timeout"]
@@ -300,3 +302,7 @@ These are aspirational next steps, not implemented features:
 3. Add richer 3D target maneuvers, multiple simultaneous targets, and target selection logic.
 4. Add guidance-law comparisons such as augmented PN or pure pursuit.
 5. Export machine-readable telemetry for plotting, regression analysis, and hardware-in-the-loop style replay.
+
+## License
+
+MIT
